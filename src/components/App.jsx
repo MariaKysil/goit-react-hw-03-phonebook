@@ -6,6 +6,8 @@ import { Box } from 'Box';
 import { ContactForm } from './ContactForm/ContactForm';
 import { Filter } from './Filter/Filter';
 import { ContactList } from './Contacts/ContactList';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export class App extends Component {
   state = {
@@ -36,11 +38,16 @@ export class App extends Component {
   }
 
   addContact = (name, number) => {
+    const { contacts } = this.state;
     const newContact = { id: nanoid(), name, number };
 
-    this.setState(({ contacts }) => ({
-      contacts: [newContact, ...contacts],
-    }));
+    if (contacts.find(contact => contact.name === name)) {
+      toast.error(`${name} is already in contacts`);
+      return;
+    } else
+      this.setState(({ contacts }) => ({
+        contacts: [newContact, ...contacts],
+      }));
   };
 
   formSubmitHandler = data => {
@@ -60,13 +67,15 @@ export class App extends Component {
     );
   };
 
-  checkExistingContact = contact => {
-    const { contacts } = this.state;
+  // checkExistingContact = contact => {
+  //   const { contacts } = this.state;
 
-    if (contacts.find(({ name }) => name === contact)) {
-      return alert(`${contact} is already in contacts`);
-    }
-  };
+  //   const existingContact = contacts.find(({ name }) => name === contact);
+  //   if (existingContact) {
+  //     alert(`${contact} is already in contacts`);
+  //     return;
+  //   } else this.addContact();
+  // };
 
   deleteContact = contactId => {
     this.setState(prevState => ({
@@ -94,8 +103,9 @@ export class App extends Component {
           <ContactForm
             onSubmit={this.formSubmitHandler}
             addContact={this.addContact}
-            checkExistingContact={this.checkExistingContact}
+            // checkExistingContact={this.checkExistingContact}
           ></ContactForm>
+          <ToastContainer />
 
           <h2>Contacts</h2>
           <Filter value={filter} onChange={this.filter}></Filter>

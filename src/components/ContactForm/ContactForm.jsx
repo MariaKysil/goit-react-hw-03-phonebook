@@ -21,7 +21,7 @@ export class ContactForm extends Component {
 
     onSubmit({ name, number });
     addContact(name, number);
-    checkExistingContact(name);
+    // checkExistingContact(name);
 
     this.reset();
   };
