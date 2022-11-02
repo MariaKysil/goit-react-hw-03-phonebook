@@ -17,7 +17,7 @@ export class ContactForm extends Component {
     e.preventDefault();
 
     const { name, number } = this.state;
-    const { onSubmit, addContact, checkExistingContact } = this.props;
+    const { onSubmit, addContact } = this.props;
 
     onSubmit({ name, number });
     addContact(name, number);
